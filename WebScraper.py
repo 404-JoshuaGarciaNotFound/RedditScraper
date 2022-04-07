@@ -205,12 +205,13 @@ while(stop != True):
         ###GETS LINK FOR IMAGES AND POST TITLE
         postsList = []
         linkList = []
-        print(links)
         for linkFound,post in zip(links, posts):
             linky = linkFound
             linky = str(linky)
+            #Gets beginning of image Link
             val1 = linky.find('href')
-            val2 = linky.find('rel=')
+            #Gets end of image link
+            val2 = linky.find('" ')
             postInfo = (str(post.text))
             if val1 != -1:
                 #Gets Link for the images from post info
@@ -267,10 +268,7 @@ while(stop != True):
             #DEBUGGING
             time.sleep(10)
         if(isprint == True):
-            #DEBUGGING
-            #print("Successful!")
-            #DEBUGGING
             time.sleep(TIME*60)
-            print("***** Refreshing *****")
+            #print("***** Refreshing *****")
         
            
