@@ -147,7 +147,7 @@ while(stop != True):
             linkToPosts = results.find_all("a", class_="SQnoC3ObvgnGjWt90zD9Z")
             postInfo = results.find_all("div", class_="_292iotee39Lmt0MkQZ2hPV")
         except AttributeError:
-            print("ERROR")
+            print("ERROR... REFRESHING")
         
         pricesList = []
         ###PRICE ESTIMATOR
@@ -211,7 +211,7 @@ while(stop != True):
             #Gets beginning of image Link
             val1 = linky.find('href')
             #Gets end of image link
-            val2 = linky.find('" ')
+            val2 = linky.find('rel=')
             postInfo = (str(post.text))
             if val1 != -1:
                 #Gets Link for the images from post info
