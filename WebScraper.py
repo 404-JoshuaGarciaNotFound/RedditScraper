@@ -19,7 +19,7 @@ from bs4 import BeautifulSoup
 #zipCodes.drop("county", inplace=True, axis=1)
 #zipCodes.drop("city", inplace=True, axis=1)
 #print(zipCodes['zipcode'].)
-
+printed = False
 stop = False
 URL = "https://www.reddit.com/r/hardwareswap/new/"
 print("Connecting to HardWareSwap please wait...")
@@ -128,12 +128,16 @@ while(stop != True):
             return pricesList
 
     isprint = False
+    
     page = requests.get(URL)
     #Checks if webpage is offline.
     if(page.status_code != 200):
-        print("Reddit hardware Swap is offline")
+        print("Reddit hardware Swap is offline Status code: " + str(page.status_code))
         time.sleep(120)
     else:
+        if(printed == False):
+            print("Connection Successful!")
+            printed = True
         soup = BeautifulSoup(page.content, 'html.parser')
         results = soup.find(id="SHORTCUT_FOCUSABLE_DIV")
         
@@ -141,13 +145,14 @@ while(stop != True):
         try:
             #have to test.
             posts = results.find_all("h3", class_="_eYtD2XCVieq6emjKBH3m")
+            
             options = results.find_all("div", class_="_2X6EB3ZhEeXCh1eIVA64XM")
-            timeDisplayed = results.find_all("a", class_="_3jOxDPIQ0KaOWpzvSQo-1s")
+            timeDisplayed = results.find_all("div", class_="_3AStxql1mQsrZuUIFP9xSg nU4Je7n-eSXStTBAPMYt8")
             links = results.find_all("div", class_="_292iotee39Lmt0MkQZ2hPV")
             linkToPosts = results.find_all("a", class_="SQnoC3ObvgnGjWt90zD9Z")
             postInfo = results.find_all("div", class_="_292iotee39Lmt0MkQZ2hPV")
         except AttributeError:
-            print("ERROR... REFRESHING")
+            print("FATAL ERROR::::PLEASE WAIT::::REFRESHING")
         
         pricesList = []
         ###PRICE ESTIMATOR
@@ -201,6 +206,7 @@ while(stop != True):
         for linkToPost in linkToPosts:
             linksToPst = ("https://www.reddit.com" + str(linkToPost.get('href')))
             linkPostsList.append(linksToPst)
+            #print(linkPostsList)
 
         ###GETS LINK FOR IMAGES AND POST TITLE
         postsList = []
@@ -254,6 +260,12 @@ while(stop != True):
             else:
                 isprint = True
 
+        #print(postsList)
+        #print(optionItems)
+        #print(timeList)
+        #print(linkList)
+        #print(linkPostsList)
+        #print(pricesList)
         #Data printed here
         for post, option, timeToPrint, linkie, linksToPst, price2 in zip(postsList, optionItems, timeList, linkList, linkPostsList, pricesList):
             if(option == "SELLING"):
